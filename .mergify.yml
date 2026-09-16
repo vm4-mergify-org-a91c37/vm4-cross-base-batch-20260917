@@ -1,0 +1,9 @@
+merge_queue:
+  max_parallel_checks: 2
+queue_rules:
+  - name: default
+    batch_size: 2
+    batch_max_wait_time: 1 minute
+    queue_conditions: true
+    merge_conditions:
+      - check-success = vm4-cross-base-never-green
