@@ -1,9 +1,25 @@
 merge_queue:
-  max_parallel_checks: 2
+  max_parallel_checks: 1
+  queue_controls_comment: false
+
 queue_rules:
-  - name: default
-    batch_size: 2
-    batch_max_wait_time: 1 minute
-    queue_conditions: true
+  - name: vm4-retarget-release-loose-260926
+    queue_conditions:
+      - base = vm4-retarget-release-260926
     merge_conditions:
-      - check-success = vm4-cross-base-never-green
+      - status-success = vm4-retarget-release-hold-260926
+    merge_method: merge
+    batch_size: 1
+    batch_max_wait_time: "1 second"
+    checks_timeout: null
+
+  - name: vm4-retarget-main-strict-260926
+    queue_conditions:
+      - base = main
+      - label = vm4-main-explicit-allow-260926
+    merge_conditions:
+      - status-success = vm4-retarget-main-hold-260926
+    merge_method: merge
+    batch_size: 1
+    batch_max_wait_time: "1 second"
+    checks_timeout: null
